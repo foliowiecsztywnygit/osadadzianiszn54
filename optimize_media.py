@@ -2,9 +2,9 @@ import os
 import shutil
 from PIL import Image
 
-src_dir = r"C:\Users\mzebr\hustla\Osada Dzianisz N54\public\osadadzianiszn54"
-target_images = r"C:\Users\mzebr\hustla\Osada Dzianisz N54\website\public\assets\images"
-target_video = r"C:\Users\mzebr\hustla\Osada Dzianisz N54\website\public\assets\video"
+src_dir = r"C:\Users\mzebr\hustla\Osada Dzianisz N54\public\assets\osadadzianiszn54"
+target_images = r"C:\Users\mzebr\hustla\Osada Dzianisz N54\public\assets\images"
+target_video = r"C:\Users\mzebr\hustla\Osada Dzianisz N54\public\assets\video"
 
 os.makedirs(target_images, exist_ok=True)
 os.makedirs(target_video, exist_ok=True)
