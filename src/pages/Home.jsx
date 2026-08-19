@@ -40,7 +40,7 @@ const Home = () => {
             Cicha i urokliwa miejscowość, w której znajdują się nasze domki, oddalona jest zaledwie 9 km od Zakopanego, 2 km od stacji narciarskiej Witów Ski i 2 km od Term Chochołowskich, co czyni ją doskonałą bazą wypadową do licznych atrakcji Podhala. Cisza i spokój pozwolą na spędzenie wyjątkowych chwil w gronie najbliższych.
           </p>
           <p className="text-gray-600 font-light leading-relaxed mb-6">
-            Oferujemy zakwaterowanie w luksusowych domkach 14-osobowych o powierzchni 160m² każdy. Znajdziecie w nich przytulnie urządzone wnętrza, wygodne meble i tarasy z widokiem na góry. Zadbaliśmy o to, by nasi goście czuli się swobodnie i komfortowo (zapewniamy ręczniki i pościel).
+            Oferujemy zakwaterowanie w luksusowych domkach 14-osobowych o powierzchni 160m² każdy. Każdy z domów jest częściowo ogrodzony i posiada własną strefę wypoczynku z grillem oraz niewielki plac zabaw dla dzieci. Dwa domy posiadają dodatkowo altany, a trzeci dysponuje dużym, przestronnym tarasem. Wnętrza są przytulnie urządzone, posiadają wygodne meble, a my zapewniamy ręczniki i pościel.
           </p>
           <p className="text-xs uppercase tracking-widest font-bold text-accent">
             Najbliższe lotnisko: Kraków-Balice (83 km)
@@ -65,9 +65,9 @@ const Home = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { id: 1, img: "wnetrze-1.webp" },
-              { id: 2, img: "wnetrze-7.webp" },
-              { id: 3, img: "wnetrze-18.webp" }
+              { id: 1, img: "dom1-1.jpg", desc: "Z prywatnym jacuzzi i altaną. Obejmuje strefę wypoczynku z grillem oraz plac zabaw." },
+              { id: 2, img: "wnetrze-7.webp", desc: "Z przestronnym tarasem lub altaną, strefą wypoczynku z grillem i placem zabaw." },
+              { id: 3, img: "wnetrze-18.webp", desc: "Z altaną lub dużym tarasem, strefą wypoczynku z grillem i placem zabaw." }
             ].map(domek => (
               <div key={domek.id} className="bg-white shadow-md group overflow-hidden flex flex-col h-full">
                 <div className="relative h-64 overflow-hidden">
@@ -78,7 +78,8 @@ const Home = () => {
                 </div>
                 <div className="p-8 flex-grow flex flex-col">
                   <h3 className="text-xl font-serif text-foreground mb-4">Domek Wakacyjny<br/>N°{domek.id}</h3>
-                  <ul className="text-sm text-gray-500 mb-6 space-y-1 flex-grow">
+                  <p className="text-sm text-gray-600 font-light mb-4 flex-grow">{domek.desc}</p>
+                  <ul className="text-sm text-gray-500 mb-6 space-y-1">
                     <li>• Do 14 gości (160m²)</li>
                     <li>• 5 sypialni (część z balkonem)</li>
                     <li>• 2 łazienki z prysznicem</li>

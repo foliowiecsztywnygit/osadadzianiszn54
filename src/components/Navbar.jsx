@@ -32,7 +32,7 @@ const Navbar = () => {
             <img 
               src="/assets/images/logo.png" 
               alt="Osada Dzianisz N°54" 
-              className="h-24 md:h-32 w-auto object-contain transform scale-125 origin-left logo-filter" 
+              className="h-28 md:h-36 w-auto object-contain transform scale-150 origin-left logo-filter" 
             />
           </Link>
           

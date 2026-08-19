@@ -17,6 +17,12 @@ const GalleryPage = () => {
       category: 'zima',
       alt: `Zima i wieczór ${i + 1}`
     })),
+    // Nowe zdjęcia Domek I
+    ...Array.from({ length: 4 }, (_, i) => ({
+      src: `/assets/images/dom1-${i + 1}.jpg`,
+      category: 'wnetrza',
+      alt: `Domek 1 - Nowe zdjęcie ${i + 1}`
+    })),
     // Wnętrza
     ...Array.from({ length: 36 }, (_, i) => ({
       src: `/assets/images/wnetrze-${i + 1}.webp`,

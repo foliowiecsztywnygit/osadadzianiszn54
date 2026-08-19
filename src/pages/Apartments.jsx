@@ -15,7 +15,7 @@ const Apartments = () => {
           <div className="mb-16 text-center max-w-3xl mx-auto">
             <h2 className="text-4xl font-serif text-foreground mb-6">Trzy Niezależne Domy</h2>
             <p className="text-gray-600 font-light leading-relaxed">
-              Oferujemy zakwaterowanie w 3 identycznych, luksusowych domkach 14-osobowych. Każdy dom o powierzchni 160m² to miejsce dla osób ceniących sobie ciszę i spokój, a jednocześnie chcących cieszyć się atrakcjami Podhala.
+              Oferujemy zakwaterowanie w 3 luksusowych domkach 14-osobowych. Każdy dom o powierzchni 160m² to miejsce dla osób ceniących sobie ciszę i spokój, a jednocześnie chcących cieszyć się atrakcjami Podhala.
             </p>
           </div>
 
@@ -65,10 +65,10 @@ const Apartments = () => {
               <div className="flex-1">
                 <h3 className="text-3xl font-serif text-foreground mb-6">Salon z Kominkiem</h3>
                 <p className="text-gray-600 font-light leading-relaxed mb-6">
-                  Jasny, słoneczny salon to idealne miejsce na długie wieczory. Wyposażony w nastrojowy kominek, ogromne i wygodne kanapy oraz duży telewizor z bogatą ofertą kanałów.
+                  Jasny, słoneczny salon to idealne miejsce na długie wieczory. Wyposażony w nastrojowy kominek, ogromne i wygodne kanapy oraz duży telewizor z ofertą kanałów.
                 </p>
                 <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Ogrzewanie podłogowe na parterze i w łazienkach (elektryczne piecyki konwekcyjne w reszcie domu)</li>
+                  <li>• Ogrzewanie podłogowe na części parteru i w łazienkach (elektryczne piecyki konwekcyjne w reszcie domu)</li>
                   <li>• Darmowe szybkie Wi-Fi</li>
                   <li>• Bezpośrednie wyjście na taras widokowy</li>
                 </ul>

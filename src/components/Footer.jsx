@@ -11,7 +11,7 @@ const Footer = () => {
             <img 
               src="/assets/images/logo.png" 
               alt="Osada Dzianisz N°54" 
-              className="h-32 w-auto mb-6 mx-auto md:mx-0 opacity-90 logo-filter transform scale-125 origin-center md:origin-left object-contain" 
+              className="h-40 w-auto mb-6 mx-auto md:mx-0 opacity-90 logo-filter transform scale-150 origin-center md:origin-left object-contain" 
             />
             <p className="text-gray-600 text-sm font-light leading-loose max-w-sm mx-auto md:mx-0">
               ul. Kurierów Tatrzańskich 47<br />
@@ -19,7 +19,7 @@ const Footer = () => {
             </p>
             <div className="mt-6 space-y-2 text-sm">
               <p className="text-accent font-medium"><span className="text-foreground mr-2">📱</span>+48 503 142 398</p>
-              <p className="text-accent font-medium"><span className="text-foreground mr-2">✉</span>kontakt@osadadzianisz.pl</p>
+              <p className="text-accent font-medium"><span className="text-foreground mr-2">✉</span>domkidzianisz@wp.pl</p>
             </div>
           </div>
 
