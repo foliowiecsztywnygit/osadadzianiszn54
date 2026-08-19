@@ -32,6 +32,10 @@ for filename in os.listdir(src_dir):
     if ext in ['.jpg', '.jpeg', '.png']:
         try:
             with Image.open(filepath) as img:
+                # Apply EXIF rotation before stripping metadata
+                from PIL import ImageOps
+                img = ImageOps.exif_transpose(img)
+                
                 # Convert RGBA to RGB for webp/jpeg saving
                 if img.mode in ("RGBA", "P"):
                     img = img.convert("RGB")
