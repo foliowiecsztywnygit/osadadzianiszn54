@@ -106,17 +106,33 @@ app.get('/api/admin/inquiries', authenticateToken, (req, res) => {
     });
 });
 
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // --- Public Form Submission ---
 app.post('/api/inquiries', (req, res) => {
     const { cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message } = req.body;
     
     const stmt = db.prepare(`INSERT INTO inquiries (cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-    stmt.run([cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message], function(err) {
+    stmt.run([cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message], async function(err) {
         if (err) return res.status(500).json({ error: err.message });
         
-        // Mock notification
+        // Mock notification via SMS/WhatsApp alternative
         console.log(`[NOTIFICATION] New inquiry received from ${guest_name} for Cabin ${cabin_id || 'Any'} from ${start_date} to ${end_date}`);
         
+        // --- RESEND EMAIL INTEGRATION (Prepared for desktop inquiries) ---
+        // try {
+        //   await resend.emails.send({
+        //     from: 'rezerwacje@osadadzianisz.pl',
+        //     to: 'wlascicielka@osadadzianisz.pl',
+        //     subject: `Nowe zapytanie o rezerwację - ${guest_name}`,
+        //     html: `<p><strong>Imię:</strong> ${guest_name}</p><p><strong>Telefon:</strong> ${guest_phone}</p><p><strong>Email:</strong> ${guest_email}</p><p><strong>Termin:</strong> ${start_date} do ${end_date}</p><p><strong>Wiadomość:</strong> ${message}</p>`
+        //   });
+        // } catch (emailErr) {
+        //   console.error("Failed to send email via Resend", emailErr);
+        // }
+        // -----------------------------------------------------------------
+
         res.json({ id: this.lastID, success: true });
     });
     stmt.finalize();
