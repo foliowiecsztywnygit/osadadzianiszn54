@@ -1,5 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Calendar from './Calendar';
+import { format, isAfter, isBefore } from 'date-fns';
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -8,16 +10,24 @@ const SearchBar = () => {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const [checkIn, setCheckIn] = useState(today.toISOString().split('T')[0]);
-  const [checkOut, setCheckOut] = useState(tomorrow.toISOString().split('T')[0]);
-  const [href, setHref] = useState('');
+  const [checkIn, setCheckIn] = useState(today);
+  const [checkOut, setCheckOut] = useState(tomorrow);
+  
+  const [activeField, setActiveField] = useState(null); // 'checkIn' or 'checkOut'
+  const containerRef = useRef(null);
 
-  const checkInRef = useRef(null);
-  const checkOutRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setActiveField(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const formatDateForDisplay = (dateString) => {
-    if (!dateString) return null;
-    const date = new Date(dateString);
+  const formatDateForDisplay = (date) => {
+    if (!date) return { day: '', month: '', weekday: '' };
     const day = date.getDate();
     const month = date.toLocaleString('pl-PL', { month: 'short' }).replace('.', '');
     const weekday = date.toLocaleString('pl-PL', { weekday: 'long' });
@@ -28,40 +38,43 @@ const SearchBar = () => {
   const checkInDisplay = formatDateForDisplay(checkIn);
   const checkOutDisplay = formatDateForDisplay(checkOut);
 
-  // Funkcja przekierowująca do formularza z parametrami
   const handleSearchClick = (e) => {
     e.preventDefault();
-    navigate(`/kontakt?checkin=${checkIn}&checkout=${checkOut}`);
+    const startStr = format(checkIn, 'yyyy-MM-dd');
+    const endStr = format(checkOut, 'yyyy-MM-dd');
+    navigate(`/rezerwacja?start=${startStr}&end=${endStr}&guests=2`);
   };
 
-  // Funkcje wywołujące systemowy kalendarz
-  const handleCheckInClick = () => {
-    if (checkInRef.current && checkInRef.current.showPicker) {
-      checkInRef.current.showPicker();
-    }
-  };
-
-  const handleCheckOutClick = () => {
-    if (checkOutRef.current && checkOutRef.current.showPicker) {
-      checkOutRef.current.showPicker();
+  const handleDateSelect = (date) => {
+    if (activeField === 'checkIn') {
+      setCheckIn(date);
+      if (isAfter(date, checkOut) || date.getTime() === checkOut.getTime()) {
+        const nextDay = new Date(date);
+        nextDay.setDate(nextDay.getDate() + 1);
+        setCheckOut(nextDay);
+      }
+      setActiveField('checkOut');
+    } else if (activeField === 'checkOut') {
+      if (isBefore(date, checkIn) || date.getTime() === checkIn.getTime()) {
+        setCheckIn(date);
+        const nextDay = new Date(date);
+        nextDay.setDate(nextDay.getDate() + 1);
+        setCheckOut(nextDay);
+      } else {
+        setCheckOut(date);
+      }
+      setActiveField(null); // Close after selecting checkout
     }
   };
 
   return (
-    <div className="bg-white max-w-4xl mx-auto flex flex-col md:flex-row shadow-2xl relative z-20">
+    <div ref={containerRef} className="bg-white max-w-4xl mx-auto flex flex-col md:flex-row shadow-2xl relative z-20">
       
       {/* Check In */}
       <div 
-        onClick={handleCheckInClick}
-        className="flex-1 flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-gray-100 relative hover:bg-gray-50 transition-colors cursor-pointer group overflow-hidden"
+        onClick={() => setActiveField('checkIn')}
+        className={`flex-1 flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-gray-100 relative hover:bg-gray-50 transition-colors cursor-pointer group ${activeField === 'checkIn' ? 'bg-gray-50' : ''}`}
       >
-        <input 
-          type="date" 
-          ref={checkInRef}
-          value={checkIn}
-          onChange={(e) => setCheckIn(e.target.value)}
-          className="absolute opacity-0 -z-10 w-1 h-1" 
-        />
         <div className="flex items-center space-x-3 pointer-events-none">
           <span className="text-4xl font-serif text-foreground group-hover:text-accent transition-colors">{checkInDisplay.day}</span>
           <div className="flex flex-col">
@@ -69,6 +82,17 @@ const SearchBar = () => {
             <span className="text-[10px] text-gray-500 uppercase tracking-widest">{checkInDisplay.weekday}</span>
           </div>
         </div>
+        
+        {/* Check In Calendar Popup */}
+        {activeField === 'checkIn' && (
+          <div className="absolute top-[100%] left-0 mt-2 z-50">
+            <Calendar 
+              selectedDates={[checkIn]}
+              blockedDates={[]} // Don't show blocks in search
+              onChange={handleDateSelect}
+            />
+          </div>
+        )}
       </div>
 
       <div className="hidden md:flex items-center justify-center px-6 text-gray-300">
@@ -79,17 +103,9 @@ const SearchBar = () => {
 
       {/* Check Out */}
       <div 
-        onClick={handleCheckOutClick}
-        className="flex-1 flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-gray-100 relative hover:bg-gray-50 transition-colors cursor-pointer group overflow-hidden"
+        onClick={() => setActiveField('checkOut')}
+        className={`flex-1 flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-gray-100 relative hover:bg-gray-50 transition-colors cursor-pointer group ${activeField === 'checkOut' ? 'bg-gray-50' : ''}`}
       >
-        <input 
-          type="date" 
-          ref={checkOutRef}
-          value={checkOut}
-          min={checkIn}
-          onChange={(e) => setCheckOut(e.target.value)}
-          className="absolute opacity-0 -z-10 w-1 h-1" 
-        />
         <div className="flex items-center space-x-3 pointer-events-none">
           <span className="text-4xl font-serif text-foreground group-hover:text-accent transition-colors">{checkOutDisplay.day}</span>
           <div className="flex flex-col">
@@ -97,16 +113,26 @@ const SearchBar = () => {
             <span className="text-[10px] text-gray-500 uppercase tracking-widest">{checkOutDisplay.weekday}</span>
           </div>
         </div>
+
+        {/* Check Out Calendar Popup */}
+        {activeField === 'checkOut' && (
+          <div className="absolute top-[100%] left-0 mt-2 z-50">
+            <Calendar 
+              selectedDates={[checkOut]}
+              blockedDates={[]} // Don't show blocks in search
+              onChange={handleDateSelect}
+            />
+          </div>
+        )}
       </div>
 
-      {/* CTA Button przenoszący do formularza */}
+      {/* CTA Button */}
       <button 
         onClick={handleSearchClick}
         className="md:w-56 bg-accent text-white py-6 text-sm font-bold tracking-widest hover:bg-[#b88c45] transition-colors duration-300 flex items-center justify-center text-center focus:outline-none"
       >
         SZUKAJ
       </button>
-
     </div>
   );
 };

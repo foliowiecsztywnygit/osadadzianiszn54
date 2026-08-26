@@ -9,6 +9,9 @@ import Apartments from './pages/Apartments';
 import Attractions from './pages/Attractions';
 import Rules from './pages/Rules';
 import Contact from './pages/Contact';
+import BookingPage from './pages/Booking';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -34,9 +37,14 @@ function App() {
             <Route path="/atrakcje" element={<Attractions />} />
             <Route path="/regulamin" element={<Rules />} />
             <Route path="/kontakt" element={<Contact />} />
+            <Route path="/rezerwacja" element={<BookingPage />} />
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </main>
-        <Footer />
+        {/* Do not show footer on admin pages for cleaner UI */}
+        {!window.location.pathname.startsWith('/admin') && <Footer />}
       </div>
     </Router>
   );

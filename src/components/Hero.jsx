@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 
 const Hero = ({ title, subtitle, isHome = false }) => {
   return (
-    <div className={`relative ${isHome ? 'h-[90vh]' : 'h-[60vh]'} bg-gray-900 w-full`}>
+    <div className={`relative ${isHome ? 'h-[90vh]' : 'h-[60vh]'} bg-gray-900 w-full z-40`}>
       <video 
         autoPlay 
         loop 
@@ -27,7 +27,7 @@ const Hero = ({ title, subtitle, isHome = false }) => {
         )}
       </div>
 
-      <div className="absolute bottom-0 w-full px-4 transform translate-y-1/2">
+      <div className="absolute bottom-0 w-full px-4 transform translate-y-1/2 z-50">
         <SearchBar />
       </div>
     </div>
