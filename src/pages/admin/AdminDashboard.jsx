@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from '../../components/Calendar';
 import { format, addDays } from 'date-fns';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 const AdminDashboard = () => {
   const [cabins, setCabins] = useState([]);
   const [blocks, setBlocks] = useState([]);
@@ -14,11 +16,11 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const cabinsRes = await fetch('http://localhost:3001/api/cabins');
+      const cabinsRes = await fetch(`${API_URL}/api/cabins`);
       const cabinsData = await cabinsRes.json();
       setCabins(cabinsData);
 
-      const blocksRes = await fetch('http://localhost:3001/api/admin/blocks', {
+      const blocksRes = await fetch(`${API_URL}/api/admin/blocks`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (blocksRes.status === 401 || blocksRes.status === 403) {
@@ -41,7 +43,7 @@ const AdminDashboard = () => {
 
     const refreshSession = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/admin/refresh', {
+        const res = await fetch(`${API_URL}/api/admin/refresh`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -89,7 +91,7 @@ const AdminDashboard = () => {
           for (const d of datesToToggle) {
             const b = blocks.find(x => x.cabin_id === cabinId && x.start_date === d);
             if (b) {
-              await fetch(`http://localhost:3001/api/admin/blocks/${b.id}`, {
+              await fetch(`${API_URL}/api/admin/blocks/${b.id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
               });
@@ -100,7 +102,7 @@ const AdminDashboard = () => {
           for (const d of datesToToggle) {
             const b = blocks.find(x => x.cabin_id === cabinId && x.start_date === d);
             if (!b) {
-              await fetch(`http://localhost:3001/api/admin/blocks`, {
+              await fetch(`${API_URL}/api/admin/blocks`, {
                 method: 'POST',
                 headers: { 
                   'Content-Type': 'application/json',

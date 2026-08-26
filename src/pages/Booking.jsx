@@ -6,6 +6,8 @@ import SearchBar from '../components/SearchBar';
 import Calendar from '../components/Calendar';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 const BookingPage = () => {
   const [searchParams] = useSearchParams();
   const startParam = searchParams.get('start');
@@ -33,11 +35,11 @@ const BookingPage = () => {
       setLoading(true);
       try {
         // Fetch all cabins
-        const cabinsRes = await fetch('http://localhost:3001/api/cabins');
+        const cabinsRes = await fetch(`${API_URL}/api/cabins`);
         const cabins = await cabinsRes.json();
 
         // Fetch blocks
-        const blocksRes = await fetch('http://localhost:3001/api/availability');
+        const blocksRes = await fetch(`${API_URL}/api/availability`);
         const blocks = await blocksRes.json();
 
         // Calculate fully booked dates for general calendar
@@ -90,7 +92,7 @@ const BookingPage = () => {
     
     setSubmitStatus('sending');
     try {
-      const res = await fetch('http://localhost:3001/api/inquiries', {
+      const res = await fetch(`${API_URL}/api/inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

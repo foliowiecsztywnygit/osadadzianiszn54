@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar';
 import { format, isAfter, isBefore } from 'date-fns';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 const SearchBar = () => {
   const navigate = useNavigate();
 
@@ -12,11 +14,25 @@ const SearchBar = () => {
 
   const [checkIn, setCheckIn] = useState(today);
   const [checkOut, setCheckOut] = useState(tomorrow);
+  const [blockedDates, setBlockedDates] = useState([]);
   
   const [activeField, setActiveField] = useState(null); // 'checkIn' or 'checkOut'
   const containerRef = useRef(null);
 
   useEffect(() => {
+    const fetchBlocks = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/availability`);
+        if (res.ok) {
+          const data = await res.json();
+          setBlockedDates(data.map(d => new Date(d.date)));
+        }
+      } catch (err) {
+        console.error("Failed to fetch blocked dates", err);
+      }
+    };
+    fetchBlocks();
+
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
         setActiveField(null);
