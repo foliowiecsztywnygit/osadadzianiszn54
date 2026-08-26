@@ -143,7 +143,8 @@ const path = require('path');
 const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));
 
-app.get('*', (req, res) => {
+// Catch-all route for SPA (React Router)
+app.use((req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
 });
 
