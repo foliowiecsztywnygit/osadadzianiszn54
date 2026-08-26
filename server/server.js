@@ -107,7 +107,7 @@ app.get('/api/admin/inquiries', authenticateToken, (req, res) => {
 });
 
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // --- Public Form Submission ---
 app.post('/api/inquiries', (req, res) => {
