@@ -138,6 +138,15 @@ app.post('/api/inquiries', (req, res) => {
     stmt.finalize();
 });
 
+// --- Serve React Frontend in Production ---
+const path = require('path');
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

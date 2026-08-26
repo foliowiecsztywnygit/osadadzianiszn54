@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Calendar from './Calendar';
 import { format, isAfter, isBefore } from 'date-fns';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.PROD ? '' : 'http://localhost:3001';
 
 const SearchBar = () => {
   const navigate = useNavigate();
