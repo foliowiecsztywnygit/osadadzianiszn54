@@ -12,6 +12,9 @@ import Contact from './pages/Contact';
 import BookingPage from './pages/Booking';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import { HelmetProvider } from 'react-helmet-async';
+import BlogList from './pages/BlogList';
+import BlogPost from './pages/BlogPost';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -24,8 +27,9 @@ const ScrollToTop = () => {
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
+    <HelmetProvider>
+      <Router>
+        <ScrollToTop />
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <main className="flex-grow">
@@ -41,12 +45,17 @@ function App() {
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            
+            {/* Blog Routes */}
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
           </Routes>
         </main>
         {/* Do not show footer on admin pages for cleaner UI */}
         {!window.location.pathname.startsWith('/admin') && <Footer />}
       </div>
     </Router>
+    </HelmetProvider>
   );
 }
 
