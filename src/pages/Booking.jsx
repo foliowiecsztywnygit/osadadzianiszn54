@@ -22,6 +22,9 @@ const BookingPage = () => {
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
+  const [guestCount, setGuestCount] = useState('2');
+  const [childrenUnder3, setChildrenUnder3] = useState('0');
+  const [childrenOver3, setChildrenOver3] = useState('0');
   const [message, setMessage] = useState('');
   const [selectedCabin, setSelectedCabin] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -102,6 +105,9 @@ const BookingPage = () => {
           guest_name: guestName,
           guest_email: guestEmail,
           guest_phone: guestPhone,
+          guest_count: guestCount,
+          children_under_3: childrenUnder3,
+          children_over_3: childrenOver3,
           message: message
         })
       });
@@ -252,7 +258,7 @@ const BookingPage = () => {
                      Jesteś na smartfonie? Najszybsza rezerwacja odbywa się przez SMS. Przygotowaliśmy dla Ciebie gotową wiadomość z terminem!
                    </p>
                    <a 
-                     href={`sms:+48503142398?body=${encodeURIComponent(`Dzień dobry, chciał(a)bym zarezerwować ${selectedCabin ? `Domek Wakacyjny N°${selectedCabin}` : 'domek'} w terminie od ${displayDate(startParam)} do ${displayDate(endParam)} dla ${guestsParam} osób. Czy termin jest nadal aktualny?`)}`}
+                     href={`sms:+48503142398?body=${encodeURIComponent(`Dzień dobry, chciał(a)bym zarezerwować ${selectedCabin ? `Domek Wakacyjny N°${selectedCabin}` : 'domek'} w terminie od ${displayDate(startParam)} do ${displayDate(endParam)} dla ${guestCount} osób (w tym ${childrenUnder3} dzieci do 3 lat, ${childrenOver3} dzieci pow. 3 lat). Czy termin jest nadal aktualny?`)}`}
                      className={`w-full flex items-center justify-center gap-3 bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg transition-colors text-sm uppercase tracking-widest ${!selectedCabin ? 'opacity-50 pointer-events-none' : ''}`}
                    >
                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
@@ -275,6 +281,22 @@ const BookingPage = () => {
                     <label className="block text-gray-500 text-sm mb-1">Telefon</label>
                     <input required type="tel" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-lg focus:outline-none focus:border-accent" />
                   </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-gray-500 text-sm mb-1">Liczba osób (1-14)</label>
+                      <input required type="number" min="1" max="14" value={guestCount} onChange={e => setGuestCount(e.target.value)} className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-lg focus:outline-none focus:border-accent" />
+                    </div>
+                    <div>
+                      <label className="block text-gray-500 text-sm mb-1">Dzieci (do 3 lat)</label>
+                      <input required type="number" min="0" value={childrenUnder3} onChange={e => setChildrenUnder3(e.target.value)} className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-lg focus:outline-none focus:border-accent" />
+                    </div>
+                    <div>
+                      <label className="block text-gray-500 text-sm mb-1">Dzieci (pow. 3 lat)</label>
+                      <input required type="number" min="0" value={childrenOver3} onChange={e => setChildrenOver3(e.target.value)} className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-lg focus:outline-none focus:border-accent" />
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-gray-500 text-sm mb-1">Wiadomość (opcjonalnie)</label>
                     <textarea value={message} onChange={e => setMessage(e.target.value)} rows={3} className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-4 py-3 rounded-lg focus:outline-none focus:border-accent" />

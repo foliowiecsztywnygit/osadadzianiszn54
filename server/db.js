@@ -55,7 +55,11 @@ const db = new sqlite3.Database(dbPath, (err) => {
                 message TEXT,
                 status TEXT DEFAULT 'pending', -- 'pending', 'confirmed', 'rejected'
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            )`);
+            )`, () => {
+                db.run("ALTER TABLE inquiries ADD COLUMN guest_count INTEGER", () => {});
+                db.run("ALTER TABLE inquiries ADD COLUMN children_under_3 INTEGER", () => {});
+                db.run("ALTER TABLE inquiries ADD COLUMN children_over_3 INTEGER", () => {});
+            });
         });
     }
 });

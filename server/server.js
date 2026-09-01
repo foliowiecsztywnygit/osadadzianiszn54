@@ -111,14 +111,14 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 
 // --- Public Form Submission ---
 app.post('/api/inquiries', (req, res) => {
-    const { cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message } = req.body;
+    const { cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, guest_count, children_under_3, children_over_3, message } = req.body;
     
-    const stmt = db.prepare(`INSERT INTO inquiries (cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-    stmt.run([cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, message], async function(err) {
+    const stmt = db.prepare(`INSERT INTO inquiries (cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, guest_count, children_under_3, children_over_3, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+    stmt.run([cabin_id, start_date, end_date, guest_name, guest_email, guest_phone, guest_count, children_under_3, children_over_3, message], async function(err) {
         if (err) return res.status(500).json({ error: err.message });
         
         // Mock notification via SMS/WhatsApp alternative
-        console.log(`[NOTIFICATION] New inquiry received from ${guest_name} for Cabin ${cabin_id || 'Any'} from ${start_date} to ${end_date}`);
+        console.log(`[NOTIFICATION] New inquiry received from ${guest_name} for Cabin ${cabin_id || 'Any'} from ${start_date} to ${end_date}. Guests: ${guest_count}, Children: ${children_under_3} (under 3), ${children_over_3} (over 3).`);
         
         // --- RESEND EMAIL INTEGRATION (Prepared for desktop inquiries) ---
         // try {
@@ -126,7 +126,7 @@ app.post('/api/inquiries', (req, res) => {
         //     from: 'rezerwacje@osadadzianisz.pl',
         //     to: 'wlascicielka@osadadzianisz.pl',
         //     subject: `Nowe zapytanie o rezerwację - ${guest_name}`,
-        //     html: `<p><strong>Imię:</strong> ${guest_name}</p><p><strong>Telefon:</strong> ${guest_phone}</p><p><strong>Email:</strong> ${guest_email}</p><p><strong>Termin:</strong> ${start_date} do ${end_date}</p><p><strong>Wiadomość:</strong> ${message}</p>`
+        //     html: `<p><strong>Imię:</strong> ${guest_name}</p><p><strong>Telefon:</strong> ${guest_phone}</p><p><strong>Email:</strong> ${guest_email}</p><p><strong>Termin:</strong> ${start_date} do ${end_date}</p><p><strong>Goście:</strong> ${guest_count} (Dzieci do 3 lat: ${children_under_3}, Dzieci pow. 3 lat: ${children_over_3})</p><p><strong>Wiadomość:</strong> ${message}</p>`
         //   });
         // } catch (emailErr) {
         //   console.error("Failed to send email via Resend", emailErr);

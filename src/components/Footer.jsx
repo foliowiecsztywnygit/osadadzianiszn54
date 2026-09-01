@@ -19,6 +19,7 @@ const Footer = () => {
             </p>
             <div className="mt-6 space-y-2 text-sm">
               <p className="text-accent font-medium"><span className="text-foreground mr-2">📱</span>+48 503 142 398</p>
+              <p className="text-accent font-medium"><span className="text-foreground mr-2">✉</span>Aga75karol@op.pl</p>
               <p className="text-accent font-medium"><span className="text-foreground mr-2">✉</span>domkidzianisz@wp.pl</p>
             </div>
           </div>
