@@ -120,17 +120,17 @@ app.post('/api/inquiries', (req, res) => {
         // Mock notification via SMS/WhatsApp alternative
         console.log(`[NOTIFICATION] New inquiry received from ${guest_name} for Cabin ${cabin_id || 'Any'} from ${start_date} to ${end_date}. Guests: ${guest_count}, Children: ${children_under_3} (under 3), ${children_over_3} (over 3).`);
         
-        // --- RESEND EMAIL INTEGRATION (Prepared for desktop inquiries) ---
-        // try {
-        //   await resend.emails.send({
-        //     from: 'rezerwacje@osadadzianisz.pl',
-        //     to: 'wlascicielka@osadadzianisz.pl',
-        //     subject: `Nowe zapytanie o rezerwację - ${guest_name}`,
-        //     html: `<p><strong>Imię:</strong> ${guest_name}</p><p><strong>Telefon:</strong> ${guest_phone}</p><p><strong>Email:</strong> ${guest_email}</p><p><strong>Termin:</strong> ${start_date} do ${end_date}</p><p><strong>Goście:</strong> ${guest_count} (Dzieci do 3 lat: ${children_under_3}, Dzieci pow. 3 lat: ${children_over_3})</p><p><strong>Wiadomość:</strong> ${message}</p>`
-        //   });
-        // } catch (emailErr) {
-        //   console.error("Failed to send email via Resend", emailErr);
-        // }
+        // --- RESEND EMAIL INTEGRATION ---
+        try {
+          await resend.emails.send({
+            from: 'rezerwacje@brosystems.pl',
+            to: 'wlascicielka@osadadzianisz.pl',
+            subject: `Nowe zapytanie o rezerwację - ${guest_name}`,
+            html: `<p><strong>Imię:</strong> ${guest_name}</p><p><strong>Telefon:</strong> ${guest_phone}</p><p><strong>Email:</strong> ${guest_email}</p><p><strong>Termin:</strong> ${start_date} do ${end_date}</p><p><strong>Goście:</strong> ${guest_count} (Dzieci do 3 lat: ${children_under_3}, Dzieci pow. 3 lat: ${children_over_3})</p><p><strong>Wiadomość:</strong> ${message}</p>`
+          });
+        } catch (emailErr) {
+          console.error("Failed to send email via Resend", emailErr);
+        }
         // -----------------------------------------------------------------
 
         res.json({ id: this.lastID, success: true });
