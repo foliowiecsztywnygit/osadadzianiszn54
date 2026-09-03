@@ -124,7 +124,7 @@ app.post('/api/inquiries', (req, res) => {
         try {
           await resend.emails.send({
             from: 'rezerwacje@brosystems.pl',
-            to: 'wlascicielka@osadadzianisz.pl',
+            to: 'Aga75karol@op.pl',
             subject: `Nowe zapytanie o rezerwację - ${guest_name}`,
             html: `<p><strong>Imię:</strong> ${guest_name}</p><p><strong>Telefon:</strong> ${guest_phone}</p><p><strong>Email:</strong> ${guest_email}</p><p><strong>Termin:</strong> ${start_date} do ${end_date}</p><p><strong>Goście:</strong> ${guest_count} (Dzieci do 3 lat: ${children_under_3}, Dzieci pow. 3 lat: ${children_over_3})</p><p><strong>Wiadomość:</strong> ${message}</p>`
           });
