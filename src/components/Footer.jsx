@@ -45,6 +45,9 @@ const Footer = () => {
           </div>
 
         </div>
+        <div className="mt-12 pt-8 border-t border-[#E5E0D8] text-center text-sm text-gray-500">
+          Wykonanie i System: <a href="https://brosystems.pl" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">brosystems.pl</a>
+        </div>
       </div>
     </footer>
   );
